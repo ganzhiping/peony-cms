@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.discount.dao.DiscountMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.discount.model.Discount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="comboId" property="comboid" jdbcType="INTEGER" />
+    <result column="beginday" property="beginday" jdbcType="INTEGER" />
+    <result column="endday" property="endday" jdbcType="INTEGER" />
+    <result column="discount" property="discount" jdbcType="REAL" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, comboId, beginday, endday, discount, time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_discount
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_discount
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.discount.model.Discount" >
+    insert into pe_t_discount (id, comboId, beginday, 
+      endday, discount, time
+      )
+    values (#{id,jdbcType=INTEGER}, #{comboid,jdbcType=INTEGER}, #{beginday,jdbcType=INTEGER}, 
+      #{endday,jdbcType=INTEGER}, #{discount,jdbcType=REAL}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.discount.model.Discount" >
+    insert into pe_t_discount
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="comboid != null" >
+        comboId,
+      </if>
+      <if test="beginday != null" >
+        beginday,
+      </if>
+      <if test="endday != null" >
+        endday,
+      </if>
+      <if test="discount != null" >
+        discount,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="comboid != null" >
+        #{comboid,jdbcType=INTEGER},
+      </if>
+      <if test="beginday != null" >
+        #{beginday,jdbcType=INTEGER},
+      </if>
+      <if test="endday != null" >
+        #{endday,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        #{discount,jdbcType=REAL},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.discount.model.Discount" >
+    update pe_t_discount
+    <set >
+      <if test="comboid != null" >
+        comboId = #{comboid,jdbcType=INTEGER},
+      </if>
+      <if test="beginday != null" >
+        beginday = #{beginday,jdbcType=INTEGER},
+      </if>
+      <if test="endday != null" >
+        endday = #{endday,jdbcType=INTEGER},
+      </if>
+      <if test="discount != null" >
+        discount = #{discount,jdbcType=REAL},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.discount.model.Discount" >
+    update pe_t_discount
+    set comboId = #{comboid,jdbcType=INTEGER},
+      beginday = #{beginday,jdbcType=INTEGER},
+      endday = #{endday,jdbcType=INTEGER},
+      discount = #{discount,jdbcType=REAL},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  	<!--查询折扣分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.discount.model.Discount">
+		SELECT 
+		discount.id, comboId, beginday, endday, discount, time ,name 
+		FROM pe_t_combo combo,pe_t_discount discount
+		WHERE combo.id=discount.comboId AND combo.status=0
+			<if test="comboid != null">
+				<if test="comboid != 0">
+      				and discount.comboId=#{comboid}
+      			</if>
+      		</if>
+	</select>
+</mapper>

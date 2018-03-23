@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.ebinfolog.dao.EbInfoLogMapper">
+	<resultMap id="BaseResultMap" type="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		<id column="info_log_id" property="infoLogId" jdbcType="INTEGER" />
+		<id column="publish_date" property="publishDate" jdbcType="TIMESTAMP" />
+		<result column="clicks" property="clicks" jdbcType="INTEGER" />
+		<result column="forwards" property="forwards" jdbcType="INTEGER" />
+		<result column="collects" property="collects" jdbcType="INTEGER" />
+		<result column="module" property="module" jdbcType="CHAR" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="website" property="website" jdbcType="VARCHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result  property="counts" />
+		<result property="clicksCounts" />
+		<result property="forwardCounts" />
+		<result property="collectsCounts" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		info_log_id, publish_date, clicks, forwards, collects, module, type, website,
+		title,
+		url
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLogKey">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_eb_info_log
+		where info_log_id = #{infoLogId,jdbcType=INTEGER}
+		and publish_date = #{publishDate,jdbcType=TIMESTAMP}
+	</select>
+
+	<!--查询列表 分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_eb_info_log
+		t
+		where 1=1
+		<if test="type!= null and type!='' " >
+    	 and type= #{type}
+        </if>
+        <if test="module!= null and module!='' " >
+    	 and module= #{module}
+        </if>
+        <if test="beginTime != null and beginTime != '' ">
+			and <![CDATA[publish_date >= '${beginTime}']]>
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and <![CDATA[publish_date <= '${endTime}']]>
+		</if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 1 " >
+    	 order by clicks desc
+        </if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 2 " >
+    	 order by forwards desc
+        </if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 3 " >
+    	 order by collects desc
+        </if>
+	</select>
+
+	<!-- 查询模块 -->
+	<select id="selectByModule" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_eb_info_log
+		t
+		where 1=1
+		<if test="type!= null and type!='' " >
+    	 and type= #{type}
+        </if>
+        <if test="module!= null and module!='' " >
+    	 and module= #{module}
+        </if>
+        <if test="beginTime != null and beginTime != '' ">
+			and <![CDATA[publish_date >= '${beginTime}']]>
+		</if>
+		<if test="endTime != null and endTime != '' ">
+			and <![CDATA[publish_date <= '${endTime}']]>
+		</if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 1 " >
+    	 order by clicks desc
+        </if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 2 " >
+    	 order by forwards desc
+        </if>
+        <if test="sortCondition!= null and sortCondition!='' and sortCondition == 3 " >
+    	 order by collects desc
+        </if>
+	</select>
+	
+	<!-- 信息日志前十条点击转发收藏统计 -->
+	<select id="selectEbInfoLogsByAjax" resultMap="BaseResultMap">
+         SELECT  title,clicks,forwards,collects from pe_t_eb_info_log ORDER BY clicks DESC limit 0,10
+    </select>
+	
+	<!-- 信息来源统计 -->
+	<select id="selectEbInfoLogsByAjaxAndType" resultMap="BaseResultMap">
+        SELECT ebinfo.type ,COUNT(ebinfo.clicks) AS counts FROM (SELECT type,clicks FROM pe_t_eb_info_log ORDER BY clicks DESC LIMIT 0,100) ebinfo GROUP BY ebinfo.type
+    </select>
+    
+    <!-- 模块点击量统计 -->
+	<select id="selectEbInfoLogsByAjaxAndModule" resultMap="BaseResultMap">
+          SELECT module, COUNT(*) as counts ,SUM(clicks) AS clicksCounts from pe_t_eb_info_log GROUP BY module ORDER BY clicksCounts DESC
+    </select>
+	
+	 <!-- 模块转发收藏量统计 -->
+	<select id="selectEbInfoLogsByAjaxAndModuleAndForwardsCollects" resultMap="BaseResultMap">
+          SELECT module, COUNT(*) as counts ,SUM(forwards) AS forwardCounts,SUM(collects) AS collectsCounts from pe_t_eb_info_log GROUP BY module ORDER BY collectsCounts DESC     
+    </select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLogKey">
+		delete from pe_t_eb_info_log
+		where info_log_id = #{infoLogId,jdbcType=INTEGER}
+		and publish_date = #{publishDate,jdbcType=TIMESTAMP}
+	</delete>
+	<insert id="insert" parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		insert into pe_t_eb_info_log (info_log_id, publish_date, clicks,
+		forwards, collects, module,
+		type, website, title,
+		url)
+		values (#{infoLogId,jdbcType=INTEGER}, #{publishDate,jdbcType=TIMESTAMP},
+		#{clicks,jdbcType=INTEGER},
+		#{forwards,jdbcType=INTEGER}, #{collects,jdbcType=INTEGER}, #{module,jdbcType=CHAR},
+		#{type,jdbcType=CHAR}, #{website,jdbcType=VARCHAR},
+		#{title,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		insert into pe_t_eb_info_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="infoLogId != null">
+				info_log_id,
+			</if>
+			<if test="publishDate != null">
+				publish_date,
+			</if>
+			<if test="clicks != null">
+				clicks,
+			</if>
+			<if test="forwards != null">
+				forwards,
+			</if>
+			<if test="collects != null">
+				collects,
+			</if>
+			<if test="module != null">
+				module,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="website != null">
+				website,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="infoLogId != null">
+				#{infoLogId,jdbcType=INTEGER},
+			</if>
+			<if test="publishDate != null">
+				#{publishDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clicks != null">
+				#{clicks,jdbcType=INTEGER},
+			</if>
+			<if test="forwards != null">
+				#{forwards,jdbcType=INTEGER},
+			</if>
+			<if test="collects != null">
+				#{collects,jdbcType=INTEGER},
+			</if>
+			<if test="module != null">
+				#{module,jdbcType=CHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="website != null">
+				#{website,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		update pe_t_eb_info_log
+		<set>
+			<if test="clicks != null">
+				clicks = #{clicks,jdbcType=INTEGER},
+			</if>
+			<if test="forwards != null">
+				forwards = #{forwards,jdbcType=INTEGER},
+			</if>
+			<if test="collects != null">
+				collects = #{collects,jdbcType=INTEGER},
+			</if>
+			<if test="module != null">
+				module = #{module,jdbcType=CHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="website != null">
+				website = #{website,jdbcType=VARCHAR},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where info_log_id = #{infoLogId,jdbcType=INTEGER}
+		and publish_date = #{publishDate,jdbcType=TIMESTAMP}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.peony.peonydata.ebinfolog.model.EbInfoLog">
+		update pe_t_eb_info_log
+		set clicks = #{clicks,jdbcType=INTEGER},
+		forwards = #{forwards,jdbcType=INTEGER},
+		collects = #{collects,jdbcType=INTEGER},
+		module = #{module,jdbcType=CHAR},
+		type = #{type,jdbcType=CHAR},
+		website = #{website,jdbcType=VARCHAR},
+		title = #{title,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR}
+		where info_log_id = #{infoLogId,jdbcType=INTEGER}
+		and publish_date = #{publishDate,jdbcType=TIMESTAMP}
+	</update>
+</mapper>

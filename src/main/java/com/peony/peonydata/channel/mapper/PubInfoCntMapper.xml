@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.channel.dao.PubInfoCntMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.channel.model.PubInfoCnt" >
+    <id column="pubinfo_id" property="pubinfoId" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.peony.peonydata.channel.model.PubInfoCnt" extends="BaseResultMap" >
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pubinfo_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pe_t_pubinfo_cnt
+    where pubinfo_id = #{pubinfoId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectPubinfoCnts" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from pe_t_pubinfo_cnt
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_pubinfo_cnt
+    where pubinfo_id = #{pubinfoId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.channel.model.PubInfoCnt" >
+    insert into pe_t_pubinfo_cnt (pubinfo_id, content)
+    values (#{pubinfoId,jdbcType=INTEGER}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.channel.model.PubInfoCnt" >
+    insert into pe_t_pubinfo_cnt
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pubinfoId != null" >
+        pubinfo_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pubinfoId != null" >
+        #{pubinfoId,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.channel.model.PubInfoCnt" >
+    update pe_t_pubinfo_cnt
+    <set >
+      <if test="content != null" >
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where pubinfo_id = #{pubinfoId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.peony.peonydata.channel.model.PubInfoCnt" >
+    update pe_t_pubinfo_cnt
+    set content = #{content,jdbcType=LONGVARCHAR}
+    where pubinfo_id = #{pubinfoId,jdbcType=INTEGER}
+  </update>
+</mapper>

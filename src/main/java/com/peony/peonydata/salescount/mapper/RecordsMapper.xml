@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.salescount.dao.RecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.salescount.model.Records" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="comboId" property="comboid" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="totalPrice" property="totalprice" jdbcType="REAL" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="buyWay" property="buyway" jdbcType="CHAR" />
+    <result column="BuyBehavior" property="buybehavior" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, comboId, number, totalPrice, time, userId, buyWay, BuyBehavior
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_records
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_records
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.salescount.model.Records" >
+    insert into pe_t_records (id, comboId, number, 
+      totalPrice, time, userId, 
+      buyWay, BuyBehavior)
+    values (#{id,jdbcType=INTEGER}, #{comboid,jdbcType=INTEGER}, #{number,jdbcType=INTEGER}, 
+      #{totalprice,jdbcType=REAL}, #{time,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER}, 
+      #{buyway,jdbcType=CHAR}, #{buybehavior,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.salescount.model.Records" >
+    insert into pe_t_records
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="comboid != null" >
+        comboId,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="totalprice != null" >
+        totalPrice,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="buyway != null" >
+        buyWay,
+      </if>
+      <if test="buybehavior != null" >
+        BuyBehavior,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="comboid != null" >
+        #{comboid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null" >
+        #{totalprice,jdbcType=REAL},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="buyway != null" >
+        #{buyway,jdbcType=CHAR},
+      </if>
+      <if test="buybehavior != null" >
+        #{buybehavior,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.salescount.model.Records" >
+    update pe_t_records
+    <set >
+      <if test="comboid != null" >
+        comboId = #{comboid,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="totalprice != null" >
+        totalPrice = #{totalprice,jdbcType=REAL},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="buyway != null" >
+        buyWay = #{buyway,jdbcType=CHAR},
+      </if>
+      <if test="buybehavior != null" >
+        BuyBehavior = #{buybehavior,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.salescount.model.Records" >
+    update pe_t_records
+    set comboId = #{comboid,jdbcType=INTEGER},
+      number = #{number,jdbcType=INTEGER},
+      totalPrice = #{totalprice,jdbcType=REAL},
+      time = #{time,jdbcType=TIMESTAMP},
+      userId = #{userid,jdbcType=INTEGER},
+      buyWay = #{buyway,jdbcType=CHAR},
+      BuyBehavior = #{buybehavior,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectSalesCountByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.salescount.model.Records">
+		SELECT pr.* ,pu.user_source userSource,pu.agent_id agentId,COUNT(comboId) AS count ,
+		SUM(totalPrice) AS price ,
+		SUM(IF(BuyBehavior=1&amp;&amp;buyWay=1,1,0)) AS bank,
+		SUM(IF(BuyBehavior=1&amp;&amp;buyWay=1,totalPrice,0)) AS bankPrice,
+		SUM(IF(BuyBehavior=1&amp;&amp;buyWay=2,1,0)) AS score,
+		SUM(IF(BuyBehavior=1&amp;&amp;buyWay=2,totalPrice,0)) scorePrice
+ 		FROM pe_t_records pr LEFT JOIN pe_t_user pu ON pr.userId=pu.user_id
+		<where>
+		<if test="beginTime != null">
+			and <![CDATA[time >= '${beginTime}']]>
+		</if>
+		<if test="endTime != null">
+			and <![CDATA[time <= '${endTime}']]>
+		</if>
+		<if test="userSource != null">
+			and user_source = #{userSource,jdbcType=CHAR}
+		</if>
+		<if test="agentId != null">
+			and agent_id = #{agentId,jdbcType=INTEGER}
+		</if>
+		</where>
+		GROUP BY comboId
+		ORDER BY comboId
+
+	</select>
+	<select id="selectSalesCountByComboidByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.salescount.model.Records">
+		SELECT pr.* ,pu.login_name loginName,pu.user_source userSource,pu.agent_id agentId,pu.platform_type platformType,pu.expiry_time expiryTime
+		FROM pe_t_records pr,pe_t_user pu
+		WHERE pr.userId=pu.user_id 
+		
+		<if test="comboid != null">
+			and comboId = #{comboid,jdbcType=INTEGER}
+		</if>
+		<if test="beginTime != null">
+			and <![CDATA[time >= '${beginTime}']]>
+		</if>
+		<if test="endTime != null">
+			and <![CDATA[time <= '${endTime}']]>
+		</if>
+		<if test="userSource != null">
+			and user_source = #{userSource,jdbcType=CHAR}
+		</if>
+		<if test="agentId != null">
+			and agent_id = #{agentId,jdbcType=INTEGER}
+		</if>
+		
+		ORDER BY time
+
+	</select>
+	
+</mapper>

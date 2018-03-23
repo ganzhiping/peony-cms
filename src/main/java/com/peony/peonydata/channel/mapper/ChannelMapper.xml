@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.channel.dao.ChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.channel.model.Channel" >
+    <id column="channel_id" property="channelId" jdbcType="INTEGER" />
+    <result column="channel_pid" property="channelPid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="orderno" property="orderno" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    channel_id, channel_pid, name, orderno
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_channel
+    where channel_id = #{channelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_channel
+    where channel_id = #{channelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.channel.model.Channel" >
+    insert into pe_t_channel (channel_id, channel_pid, name, 
+      orderno)
+    values (#{channelId,jdbcType=INTEGER}, #{channelPid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{orderno,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.channel.model.Channel" >
+    insert into pe_t_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="channelId != null" >
+        channel_id,
+      </if>
+      <if test="channelPid != null" >
+        channel_pid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="orderno != null" >
+        orderno,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="channelId != null" >
+        #{channelId,jdbcType=INTEGER},
+      </if>
+      <if test="channelPid != null" >
+        #{channelPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="orderno != null" >
+        #{orderno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.channel.model.Channel" >
+    update pe_t_channel
+    <set >
+      <if test="channelPid != null" >
+        channel_pid = #{channelPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="orderno != null" >
+        orderno = #{orderno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where channel_id = #{channelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.channel.model.Channel" >
+    update pe_t_channel
+    set channel_pid = #{channelPid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      orderno = #{orderno,jdbcType=VARCHAR}
+    where channel_id = #{channelId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectChildren" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from pe_t_channel where 1= 1
+		<choose>
+			<when test="parentCode != null and parentCode != ''">
+				AND channel_pid = #{parentCode}
+			</when>
+			<otherwise>
+				AND (channel_pid is null OR channel_pid='')
+			</otherwise>
+		</choose>
+		order by orderno
+	</select>
+	<select id="loadHasChildren" resultType="int" parameterType="java.lang.String">
+		SELECT CASE WHEN EXISTS(SELECT channel_id FROM pe_t_channel WHERE
+		channel_pid=#{parentCode}) THEN 1 ELSE 0 END AS haschild FROM DUAL
+	</select>
+		<select id="selectChannels" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_channel
+		order by channel_pid
+	</select>
+</mapper>

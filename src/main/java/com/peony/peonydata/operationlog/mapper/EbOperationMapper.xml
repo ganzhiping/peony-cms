@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.operationlog.dao.EbOperationMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.operationlog.model.EbOperation" >
+    <id column="operation_log_id" property="operationLogId" jdbcType="VARCHAR" />
+    <id column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="login_type" property="loginType" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
+    <result column="operate_module" property="operateModule" jdbcType="CHAR" />
+    <result column="content1" property="content1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    operation_log_id, time, user_id, name, type, login_type, content, operate_type, operate_module, 
+    content1
+  </sql>
+   <!--查询列表 分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.operationlog.model.EbOperation">
+		select
+		t.operation_log_id, t.time, t.user_id, t.name, t.type, t.login_type, t.content, t.operate_type, t.operate_module, 
+    	t.content1
+		from
+		pe_t_eb_operation_log
+		t LEFT  JOIN   pe_t_user  u ON  t.user_id=u.user_id  WHERE 1=1
+	
+	<if test="name!= null and name!='' " >
+    	 and t.name like CONCAT('%','${name}','%' )
+    </if>
+    <if test="userId!= null and userId!='' " >
+    	 and t.user_id= #{userId}
+    </if>
+    <if test="type!= null and type!='' " >
+    	 and t.type= #{type}
+    </if>
+ 	<if test="loginType!= null and loginType!= '' " >
+    	 and t.login_type= #{loginType}
+    </if>
+    <if test="agentId!= null and agentId!='' " >
+    	 and u.agent_id=#{agentId}
+    </if>
+    <if test="userSource!= null and userSource!='' " >
+    	 and u.user_source=#{userSource}
+    </if>
+    <if test="platformType!= null and platformType!='' " >
+    	 and u.platform_type=#{platformType}
+    </if>
+    <if test="userStatus!= null and userStatus!='' " >
+    	 and u.user_status=#{userStatus}
+    </if>
+    <if test="startTime != null">
+			and <![CDATA[t.time >= '${startTime}']]>
+	</if>
+	<if test="endTime != null">
+			and <![CDATA[t.time <= '${endTime}']]>
+	</if>
+		order by t.time desc
+	</select>
+
+ 
+  <insert id="insert" parameterType="com.peony.peonydata.operationlog.model.EbOperation" >
+    insert into pe_t_eb_operation_log (operation_log_id, time, user_id, 
+      name, type, login_type, 
+      content, operate_type, operate_module, 
+      content1)
+    values (#{operationLogId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{loginType,jdbcType=VARCHAR}, 
+      #{content,jdbcType=VARCHAR}, #{operateType,jdbcType=VARCHAR}, #{operateModule,jdbcType=CHAR}, 
+      #{content1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.operationlog.model.EbOperation" >
+    insert into pe_t_eb_operation_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operationLogId != null" >
+        operation_log_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="loginType != null" >
+        login_type,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="operateType != null" >
+        operate_type,
+      </if>
+      <if test="operateModule != null" >
+        operate_module,
+      </if>
+      <if test="content1 != null" >
+        content1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operationLogId != null" >
+        #{operationLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="loginType != null" >
+        #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null" >
+        #{operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="operateModule != null" >
+        #{operateModule,jdbcType=CHAR},
+      </if>
+      <if test="content1 != null" >
+        #{content1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.operationlog.model.EbOperation" >
+    update pe_t_eb_operation_log
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="loginType != null" >
+        login_type = #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="operateType != null" >
+        operate_type = #{operateType,jdbcType=VARCHAR},
+      </if>
+      <if test="operateModule != null" >
+        operate_module = #{operateModule,jdbcType=CHAR},
+      </if>
+      <if test="content1 != null" >
+        content1 = #{content1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.operationlog.model.EbOperation" >
+    update pe_t_eb_operation_log
+    set user_id = #{userId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      login_type = #{loginType,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      operate_type = #{operateType,jdbcType=VARCHAR},
+      operate_module = #{operateModule,jdbcType=CHAR},
+      content1 = #{content1,jdbcType=VARCHAR}
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

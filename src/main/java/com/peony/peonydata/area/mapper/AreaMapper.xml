@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.area.dao.AreaMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.area.model.Area" >
+    <id column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="area_pid" property="areaPid" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="order" property="order" jdbcType="VARCHAR" />
+    <result column="level" property="level" jdbcType="CHAR" />
+    <result column="explain" property="explain" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    area_id, area_pid, name, `order`, level, `explain`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_area
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAreas" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_area
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_area
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.area.model.Area" >
+    insert into pe_t_area (area_id, area_pid, name, 
+       `order`, level, explain)
+    values (#{areaId,jdbcType=INTEGER}, #{areaPid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{order,jdbcType=VARCHAR}, #{level,jdbcType=CHAR}, #{explain,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.area.model.Area" >
+    insert into pe_t_area
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="areaPid != null" >
+        area_pid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="order != null" >
+        `order`,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="explain != null" >
+        explain,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="areaPid != null" >
+        #{areaPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=CHAR},
+      </if>
+      <if test="explain != null" >
+        #{explain,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.area.model.Area" >
+    update pe_t_area
+    <set >
+      <if test="areaPid != null" >
+        area_pid = #{areaPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        `order` = #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null" >
+        level = #{level,jdbcType=CHAR},
+      </if>
+      <if test="explain != null" >
+         `explain` = #{explain,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.area.model.Area" >
+    update pe_t_area
+    set area_pid = #{areaPid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      `order` = #{order,jdbcType=VARCHAR},
+      level = #{level,jdbcType=CHAR},
+      `explain` = #{explain,jdbcType=VARCHAR}
+    where area_id = #{areaId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectChildren" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from pe_t_area where 1= 1
+		<choose>
+			<when test="parentCode != null and parentCode != ''">
+				AND area_pid = #{parentCode}
+			</when>
+			<otherwise>
+				AND (area_pid is null OR area_pid='')
+			</otherwise>
+		</choose>
+		order by `order`
+	</select>
+	<select id="loadHasChildren" resultType="int" parameterType="java.lang.String">
+		SELECT CASE WHEN EXISTS(SELECT area_id FROM pe_t_area WHERE
+		area_pid=#{parentCode}) THEN 1 ELSE 0 END AS haschild FROM DUAL
+	</select>
+	
+	<select id="findKeyWordNum" resultType="int" parameterType="java.lang.Integer">
+		SELECT
+		count(1) FROM pe_t_area u,pe_t_area_keyws d where
+		u.area_id=d.area_id and u.area_id = #{areaId,jdbcType=INTEGER}
+	</select>
+</mapper>

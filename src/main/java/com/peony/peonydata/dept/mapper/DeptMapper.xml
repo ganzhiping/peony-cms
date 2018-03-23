@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.dept.dao.DeptMapper">
+	<resultMap id="BaseResultMap" type="com.peony.peonydata.dept.model.Dept">
+		<id column="dept_id" property="deptId" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="dept_pid" property="deptPid" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="area" property="area" jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="CHAR" />
+		<result column="order" property="order" jdbcType="VARCHAR" />
+		<result column="creat_time" property="creatTime" jdbcType="TIMESTAMP" />
+		<result column="head" property="head" jdbcType="VARCHAR" />
+		<result column="address" property="address" jdbcType="VARCHAR" />
+		<result column="mobile" property="mobile" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		dept_id, name, dept_pid, code, area, type, `order`,
+		creat_time, head, address,
+		mobile
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_dept
+		where dept_id = #{deptId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		pe_t_dept
+		where dept_id = #{deptId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.peony.peonydata.dept.model.Dept">
+		insert into pe_t_dept
+		(dept_id, name, dept_pid,
+		code, area, type, `order`,
+		creat_time, head,
+		address,
+		mobile)
+		values (#{deptId,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{deptPid,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR},
+		#{type,jdbcType=CHAR},
+		#{order,jdbcType=VARCHAR},
+		#{creatTime,jdbcType=TIMESTAMP}, #{head,jdbcType=VARCHAR},
+		#{address,jdbcType=VARCHAR},
+		#{mobile,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.peony.peonydata.dept.model.Dept">
+		insert into pe_t_dept
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="deptId != null">
+				dept_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="deptPid != null">
+				dept_pid,
+			</if>
+			<if test="code != null">
+				code,
+			</if>
+			<if test="area != null">
+				area,
+			</if>
+			<if test="type != null">
+				type,
+			</if>
+			<if test="order != null">
+				`order`,
+			</if>
+			<if test="creatTime != null">
+				creat_time,
+			</if>
+			<if test="head != null">
+				head,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="deptId != null">
+				#{deptId,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="deptPid != null">
+				#{deptPid,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				#{area,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=CHAR},
+			</if>
+			<if test="order != null">
+				#{order,jdbcType=VARCHAR},
+			</if>
+			<if test="creatTime != null">
+				#{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="head != null">
+				#{head,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.dept.model.Dept">
+		update pe_t_dept
+		<set>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="deptPid != null">
+				dept_pid = #{deptPid,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="area != null">
+				area = #{area,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				type = #{type,jdbcType=CHAR},
+			</if>
+			<if test="order != null">
+				`order` = #{order,jdbcType=VARCHAR},
+			</if>
+			<if test="creatTime != null">
+				creat_time = #{creatTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="head != null">
+				head = #{head,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				address = #{address,jdbcType=VARCHAR},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where dept_id = #{deptId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.peony.peonydata.dept.model.Dept">
+		update pe_t_dept
+		set name = #{name,jdbcType=VARCHAR},
+		dept_pid =
+		#{deptPid,jdbcType=VARCHAR},
+		code = #{code,jdbcType=VARCHAR},
+		area =
+		#{area,jdbcType=VARCHAR},
+		type = #{type,jdbcType=CHAR},
+		`order` =
+		#{order,jdbcType=VARCHAR},
+		creat_time =
+		#{creatTime,jdbcType=TIMESTAMP},
+		head = #{head,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		mobile =
+		#{mobile,jdbcType=VARCHAR}
+		where dept_id = #{deptId,jdbcType=INTEGER}
+	</update>
+	<select id="selectChildren" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from pe_t_dept where 1= 1
+		<choose>
+			<when test="parentCode != null and parentCode != ''">
+				AND dept_pid = #{parentCode}
+			</when>
+			<otherwise>
+				AND (dept_pid is null OR dept_pid='')
+			</otherwise>
+		</choose>
+		order by `order`
+	</select>
+	<select id="loadHasChildren" resultType="int" parameterType="java.lang.String">
+		SELECT CASE WHEN EXISTS(SELECT dept_id FROM pe_t_dept WHERE
+		dept_pid=#{parentCode}) THEN 1 ELSE 0 END AS haschild FROM DUAL
+	</select>
+
+	<select id="findUserNum" resultType="int" parameterType="java.lang.String">
+		SELECT
+		count(1) FROM pe_t_user u,pe_t_dept d where
+		u.dept_id=d.dept_id
+	</select>
+	<select id="selectDepts" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_dept
+		order by dept_pid
+	</select>
+</mapper>

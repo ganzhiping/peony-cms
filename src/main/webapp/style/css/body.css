@@ -1,0 +1,22 @@
+/* ---���ļ�Ϊ��վ����Ĭ����ʽ���У���������ɫ�� --- */
+
+body{text-align:center;padding:0; margin:0;  }table,body,input{ font-size: 14px ;text-decoration: none;font-family: Microsoft YaHei,Arial, Helvetica, sans-serif }p{padding: 0 0 5px 0; margin:0}/*-Ĭ��<p></p>-*/form{margin:0;}img{border:0;}ul,li,dt,dl,dd,h1,h2,h3,ol{list-style:none;margin:0;padding:0;}/* ���� */.on_left{float:left;}.on_right{float:right;}.HackBox{border-top:1px solid !important;margin-top:-1px !important;border-top:0;margin-top:0;clear:both;visibility:hidden;}
+/* --del- blank �ո� --- */
+.blank0px,.blank2px,.blank5px,.blank8px,.blank10px,.blank16px,.blank20px,.blank15px,.blank12px{clear:both;visibility:hidden;font-size:1px; overflow:hidden}
+.blank0px{height:0px;}.blank2px{height:2px;}.blank5px{height:5px;}.blank8px{height:8px;}.blank10px{height:10px;}.blank15px{height:15px;}.blank16px{height:16px;}.blank20px{height:20px;}.blank12px{height:12px;}
+/* ���ÿ�� */
+.bg,.div_center{margin:0 auto; }.bg{text-align:left; width:1000px; display:block; clear:both;}
+
+/* ��ҳ */
+#pages { padding:14px 0 10px 0;   text-align:center; }
+#pages a { display:inline-block; height:26px; line-height:26px; background:#ccc;   text-align:center; color:#333; padding:0 10px; }
+#pages a.a1 {   width:56px; padding:0; }
+#pages a:hover { background:#f1f1f1; color:#000; text-decoration:none }
+#pages span { display:inline-block; height:26px; line-height:26px; background:url(../img/admin/all/top_beijing.gif) repeat; color:#fff; text-align:center;padding:0 10px; }
+.page .noPage { display:inline-block; width:56px; height:26px; line-height:26px;  text-align:center; color:#a4a4a4; }
+/* ---��վ���� --- */
+ .logo_web{ background:url(../img/top/logo.png) no-repeat; height:49px; width:288px; margin:25px 0;float:left;}
+  .logo_web a{ display:block; height:100%; width:100%;}
+  .text_center{ text-align:center}
+  /* ---��ҳ��ҳ���� --- */
+     .tb,.links li,.links li span{ background-image:url(../img/mddsj_houtai/mddsj_houtai_11.gif); background-repeat:no-repeat;background-color: transparent;}

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.popular.dao.PopularMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.popular.model.Popular" >
+    <id column="id" property="popularId" jdbcType="INTEGER" />
+    <result column="writer" property="writer" jdbcType="VARCHAR" />
+    <result column="uploadTime" property="uploadTime" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="descript" property="descript" jdbcType="VARCHAR" />
+    <result column="changeTime" property="changeTime" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="periods" property="periods" jdbcType="VARCHAR" />
+    <result column="userName" property="userName" jdbcType="VARCHAR" />
+    <result column="isDelete" property="isDelete" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="baseColumn">
+      id,writer,date_format(uploadTime,'%y-%m-%d %T') uploadTime,content,title,descript,changeTime,userid,periods,userName,isDelete
+  </sql>
+  <select id="selectByPage" parameterType="com.peony.peonydata.popular.model.Popular" resultMap="BaseResultMap">
+    select
+    <include refid="baseColumn"/>
+    from pe_t_popular
+    order by uploadTime desc
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.peony.peonydata.popular.model.Popular">
+    select
+    <include refid="baseColumn"/>
+    from pe_t_popular
+    where id = #{popularId,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.peony.peonydata.popular.model.Popular" >
+    insert into pe_t_popular (id,writer,uploadTime,content,title,descript,changeTime,userid,periods,userName,isdelete)
+    values (
+      #{popularId,jdbcType=INTEGER},
+      #{writer,jdbcType=VARCHAR},
+      #{uploadTime,jdbcType=TIMESTAMP},
+      #{content,jdbcType=VARCHAR},
+      #{title,jdbcType=VARCHAR},
+      #{descript,jdbcType=VARCHAR},
+      #{changeTime,jdbcType=TIMESTAMP},
+      #{userid,jdbcType=VARCHAR},
+      #{periods,jdbcType=INTEGER},
+      #{userName,jdbcType=VARCHAR},
+      #{isDelete,jdbcType=INTEGER}
+    )
+  </insert>
+
+  <update id="update" parameterType="com.peony.peonydata.popular.model.Popular">
+    update pe_t_popular <set>
+    <if test="writer != null" >
+      writer=#{writer,jdbcType=VARCHAR},
+    </if>
+    <if test="content != null" >
+      content= #{content,jdbcType=VARCHAR},
+    </if>
+    <if test="title != null" >
+      title=#{title,jdbcType=VARCHAR},
+    </if>
+    <if test="descript != null" >
+      descript=#{descript,jdbcType=VARCHAR},
+    </if>
+    <if test="changeTime != null" >
+      changeTime=#{changeTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="userid != null" >
+      userid=#{userid,jdbcType=VARCHAR},
+    </if>
+    <if test="periods != null" >
+      periods=#{periods,jdbcType=INTEGER},
+    </if>
+    <if test="userName != null" >
+      userName=#{userName,jdbcType=VARCHAR}
+    </if>
+  </set>
+    where id = #{popularId,jdbcType=INTEGER}
+  </update>
+
+  <delete id="delete"  parameterType="com.peony.peonydata.popular.model.Popular">
+    delete from pe_t_popular where id=#{popularId,jdbcType=INTEGER}
+  </delete>
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.combo.dao.ComboMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.combo.model.Combo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="keywordNumber" property="keywordnumber" jdbcType="INTEGER" />
+    <result column="topicNumber" property="topicnumber" jdbcType="INTEGER" />
+    <result column="introduce" property="introduce" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="REAL" />
+    <result column="status" property="status" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, keywordNumber, topicNumber, introduce, price, status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_combo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_combo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.combo.model.Combo" >
+    insert into pe_t_combo (id, name, keywordNumber, 
+      topicNumber, introduce, price, 
+      status)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{keywordnumber,jdbcType=INTEGER}, 
+      #{topicnumber,jdbcType=INTEGER}, #{introduce,jdbcType=VARCHAR}, #{price,jdbcType=REAL}, 
+      #{status,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.combo.model.Combo" >
+    insert into pe_t_combo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="keywordnumber != null" >
+        keywordNumber,
+      </if>
+      <if test="topicnumber != null" >
+        topicNumber,
+      </if>
+      <if test="introduce != null" >
+        introduce,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordnumber != null" >
+        #{keywordnumber,jdbcType=INTEGER},
+      </if>
+      <if test="topicnumber != null" >
+        #{topicnumber,jdbcType=INTEGER},
+      </if>
+      <if test="introduce != null" >
+        #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.combo.model.Combo" >
+    update pe_t_combo
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="keywordnumber != null" >
+        keywordNumber = #{keywordnumber,jdbcType=INTEGER},
+      </if>
+      <if test="topicnumber != null" >
+        topicNumber = #{topicnumber,jdbcType=INTEGER},
+      </if>
+      <if test="introduce != null" >
+        introduce = #{introduce,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=REAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.combo.model.Combo" >
+    update pe_t_combo
+    set name = #{name,jdbcType=VARCHAR},
+      keywordNumber = #{keywordnumber,jdbcType=INTEGER},
+      topicNumber = #{topicnumber,jdbcType=INTEGER},
+      introduce = #{introduce,jdbcType=VARCHAR},
+      price = #{price,jdbcType=REAL},
+      status = #{status,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectComboList" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+	select  
+	<include refid="Base_Column_List" />
+	from pe_t_combo
+	where status=0
+  </select>
+  <!-- 查询全部套餐 -->
+  	 <select id="selectAllCombos" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+	select  
+	<include refid="Base_Column_List" />
+	from pe_t_combo
+  </select>
+  	<!--查询套餐分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.combo.model.Combo">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_combo
+		
+		where status=0
+	</select>
+</mapper>

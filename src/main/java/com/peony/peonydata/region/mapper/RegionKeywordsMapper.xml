@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.region.dao.RegionKeywordsMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.region.model.RegionKeywords" >
+    <id column="regionId" property="regionid" jdbcType="VARCHAR" />
+    <result column="regionwords" property="regionwords" jdbcType="VARCHAR" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    regionId, regionwords, modify_time, user_name, content
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from wdyq_region_keywords
+    where regionId = #{regionid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from wdyq_region_keywords
+    where regionId = #{regionid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.region.model.RegionKeywords" >
+    insert into wdyq_region_keywords (regionId, regionwords, modify_time, 
+      user_name, content)
+    values (#{regionid,jdbcType=VARCHAR}, #{regionwords,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
+      #{userName,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.region.model.RegionKeywords" >
+    insert into wdyq_region_keywords
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="regionid != null" >
+        regionId,
+      </if>
+      <if test="regionwords != null" >
+        regionwords,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="regionid != null" >
+        #{regionid,jdbcType=VARCHAR},
+      </if>
+      <if test="regionwords != null" >
+        #{regionwords,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.region.model.RegionKeywords" >
+    update wdyq_region_keywords
+    <set >
+      <if test="regionwords != null" >
+        regionwords = #{regionwords,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userName != null" >
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where regionId = #{regionid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.region.model.RegionKeywords" >
+    update wdyq_region_keywords
+    set regionwords = #{regionwords,jdbcType=VARCHAR},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      user_name = #{userName,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR}
+    where regionId = #{regionid,jdbcType=VARCHAR}
+  </update>
+  <!-- 查询该地域及该地域以下的地域关键词 -->
+   <select id="selectByRegionId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from wdyq_region_keywords
+    where regionId like CONCAT('${regionid}','%' )
+  </select>
+</mapper>

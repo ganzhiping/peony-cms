@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.ebinfodetaillog.dao.EbInfoDetailLogMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLog" >
+    <id column="infodetail_log_id" property="infodetailLogId" jdbcType="INTEGER" />
+    <id column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="info_log_id" property="infoLogId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="operation_type" property="operationType" jdbcType="CHAR" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="CHAR" />
+    <result column="user_source" property="userSource" jdbcType="CHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="platform_type" property="platformType" jdbcType="CHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />    
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    infodetail_log_id, time, info_log_id, user_id, operation_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLogKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_eb_infodetail_log
+    where infodetail_log_id = #{infodetailLogId,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </select>
+  
+  <!-- 通过用户id及日志id分页查询点击、转发、收藏人数的用户及日志信息 -->
+  <select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		u.login_name,u.user_type,u.user_source,a.`name`,u.platform_type,
+		i.time,i.operation_type
+		from pe_t_eb_infodetail_log i ,pe_t_user u 
+		LEFT JOIN pe_t_agent a  on a.agent_id = u.agent_id
+		where i.user_id=u.user_id  
+		and i.info_log_id = #{infoLogId,jdbcType=INTEGER} 
+		and i.operation_type =  #{operationType,jdbcType=CHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLogKey" >
+    delete from pe_t_eb_infodetail_log
+    where infodetail_log_id = #{infodetailLogId,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLog" >
+    insert into pe_t_eb_infodetail_log (infodetail_log_id, time, info_log_id, 
+      user_id, operation_type)
+    values (#{infodetailLogId,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{infoLogId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=INTEGER}, #{operationType,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLog" >
+    insert into pe_t_eb_infodetail_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="infodetailLogId != null" >
+        infodetail_log_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="infoLogId != null" >
+        info_log_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="operationType != null" >
+        operation_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="infodetailLogId != null" >
+        #{infodetailLogId,jdbcType=INTEGER},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="infoLogId != null" >
+        #{infoLogId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        #{operationType,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLog" >
+    update pe_t_eb_infodetail_log
+    <set >
+      <if test="infoLogId != null" >
+        info_log_id = #{infoLogId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="operationType != null" >
+        operation_type = #{operationType,jdbcType=CHAR},
+      </if>
+    </set>
+    where infodetail_log_id = #{infodetailLogId,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.ebinfodetaillog.model.EbInfoDetailLog" >
+    update pe_t_eb_infodetail_log
+    set info_log_id = #{infoLogId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      operation_type = #{operationType,jdbcType=CHAR}
+    where infodetail_log_id = #{infodetailLogId,jdbcType=INTEGER}
+      and time = #{time,jdbcType=TIMESTAMP}
+  </update>
+</mapper>

@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.website.dao.WebSiteMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.website.model.WebSite" >
+    <id column="website_id" property="websiteId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="fax" property="fax" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="legal_person" property="legalPerson" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="record" property="record" jdbcType="VARCHAR" />
+    <result column="nature" property="nature" jdbcType="TINYINT" />
+    <result column="media_type" property="mediaType" jdbcType="TINYINT" />
+    <result column="process_description" property="processDescription" jdbcType="VARCHAR" />
+    <result column="material" property="material" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="contacts" property="contacts" jdbcType="VARCHAR" />
+    <result column="collect_status" property="collectStatus" jdbcType="CHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="town" property="town" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    website_id, name, url, company, phone, fax, address, legal_person, ip, record, nature,media_type, 
+    process_description, material, create_time,collect_status,contacts,province,town
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_website
+    where website_id = #{websiteId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_website
+    where website_id = #{websiteId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.website.model.WebSite" >
+    insert into pe_t_website (website_id, name, url, 
+      company, phone, fax, 
+      address, legal_person, ip, 
+      record, nature,media_type, process_description, 
+      material, create_time,contacts,collect_status,province,town)
+    values (#{websiteId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{company,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{fax,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{legalPerson,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, 
+      #{record,jdbcType=VARCHAR}, #{nature,jdbcType=TINYINT}, #{mediaType,jdbcType=TINYINT}, #{processDescription,jdbcType=VARCHAR}, 
+      #{material,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP,#{contacts,jdbcType=VARCHAR},#{collectStatus,jdbcType=CHAR},#{province,jdbcType=VARCHAR},#{town,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.website.model.WebSite" >
+    insert into pe_t_website
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="websiteId != null" >
+        website_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="company != null" >
+        company,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="fax != null" >
+        fax,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="legalPerson != null" >
+        legal_person,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="record != null" >
+        record,
+      </if>
+      <if test="nature != null" >
+        nature,
+      </if>
+       <if test="mediaType != null" >
+        media_type,
+      </if>
+      <if test="processDescription != null" >
+        process_description,
+      </if>
+      <if test="material != null" >
+        material,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="contacts != null" >
+        contacts,
+      </if>
+       <if test="collectStatus != null" >
+        collect_status,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="town != null" >
+        town,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="websiteId != null" >
+        #{websiteId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null" >
+        #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record != null" >
+        #{record,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null" >
+        #{nature,jdbcType=TINYINT},
+      </if>
+       <if test="mediaType != null" >
+        #{mediaType,jdbcType=TINYINT},
+      </if>
+      <if test="processDescription != null" >
+        #{processDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="material != null" >
+        #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="contacts != null" >
+        #{contacts,jdbcType=VARCHAR},
+      </if>
+       <if test="collectStatus != null" >
+        #{collectStatus,jdbcType=CHAR},
+      </if>
+        <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+        <if test="town != null" >
+        #{town,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.website.model.WebSite" >
+    update pe_t_website
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null" >
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="legalPerson != null" >
+        legal_person = #{legalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record != null" >
+        record = #{record,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null" >
+        nature = #{nature,jdbcType=TINYINT},
+      </if>
+      <if test="mediaType != null" >
+        media_type = #{mediaType,jdbcType=TINYINT},
+      </if>
+      <if test="processDescription != null" >
+        process_description = #{processDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="material != null" >
+        material = #{material,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contacts != null" >
+        contacts = #{contacts,jdbcType=VARCHAR},
+      </if>
+         <if test="collectStatus != null" >
+        collect_status = #{collectStatus,jdbcType=CHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="town != null" >
+        town = #{town,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where website_id = #{websiteId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.website.model.WebSite" >
+    update pe_t_website
+    set name = #{name,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      legal_person = #{legalPerson,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      record = #{record,jdbcType=VARCHAR},
+      nature = #{nature,jdbcType=TINYINT},
+      media_type = #{mediaType,jdbcType=TINYINT},
+      process_description = #{processDescription,jdbcType=VARCHAR},
+      material = #{material,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      contacts = #{contacts,jdbcType=VARCHAR},
+      collect_status = #{collectStatus,jdbcType=CHAR},
+      province = #{province,jdbcType=VARCHAR},
+      town = #{town,jdbcType=VARCHAR},
+    where website_id = #{websiteId,jdbcType=INTEGER}
+  </update>
+  
+  
+   <!--查询列表 分页 -->
+	<select id="selectByPage" parameterType="com.peony.peonydata.website.model.WebSite" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_website
+		t
+		where 1=1
+	  <if test="name != null" >
+         and   name like CONCAT('%','${name}','%' )
+      </if>
+      <if test="mediaType != null" >
+         and   media_type= #{mediaType,jdbcType=TINYINT}
+      </if>
+		
+		order by create_time desc
+	</select>
+</mapper>

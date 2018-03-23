@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.pointschange.dao.PointsChangeMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.pointschange.model.PointsChange" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="points" property="points" jdbcType="REAL" />
+    <result column="instructions" property="instructions" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, userId, points, instructions, type, time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_points_change
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_points_change
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.pointschange.model.PointsChange" >
+    insert into pe_t_points_change (id, userId, points, 
+      instructions, type, time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{points,jdbcType=REAL}, 
+      #{instructions,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{time,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.pointschange.model.PointsChange" >
+    insert into pe_t_points_change
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="instructions != null" >
+        instructions,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=REAL},
+      </if>
+      <if test="instructions != null" >
+        #{instructions,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.pointschange.model.PointsChange" >
+    update pe_t_points_change
+    <set >
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="points != null" >
+        points = #{points,jdbcType=REAL},
+      </if>
+      <if test="instructions != null" >
+        instructions = #{instructions,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.pointschange.model.PointsChange" >
+    update pe_t_points_change
+    set userId = #{userid,jdbcType=INTEGER},
+      points = #{points,jdbcType=REAL},
+      instructions = #{instructions,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 查询积分明细 -->
+	<select id="selectPointsChangesByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.pointschange.model.PointsChange">
+		 SELECT ppc.*,pu.login_name loginName,pub.type typestatus 
+		 FROM pe_t_points_change ppc,pe_t_user pu ,pe_t_user_binding pub
+		 WHERE ppc.userId=pu.user_id AND ppc.userId=pub.user_id
+		 <if test="userSource != null">
+			and user_source = #{userSource,jdbcType=CHAR}
+		</if>
+		<if test="agentId != null">
+			and agent_id = #{agentId,jdbcType=INTEGER}
+		</if>
+		<if test="platformType != null">
+			and platform_type = #{platformType,jdbcType=CHAR}
+		</if>
+		<if test="typestatus != null">
+			and pub.type = #{typestatus,jdbcType=CHAR}
+		</if>
+		<if test="type != null">
+			and ppc.type = #{type,jdbcType=CHAR}
+		</if>
+		<if test="loginName != null">
+			and login_name  like CONCAT('%','${loginName}','%' )
+		</if>
+		<if test="beginCreateTime != null">
+			and <![CDATA[ppc.time >= '${beginCreateTime}']]>
+		</if>
+		<if test="endCreateTime != null">
+			and <![CDATA[ppc.time <= '${endCreateTime}']]>
+		</if>
+		ORDER BY ppc.time desc
+	</select>
+  
+</mapper>

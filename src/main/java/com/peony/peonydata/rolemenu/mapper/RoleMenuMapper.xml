@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.rolemenu.dao.RoleMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.rolemenu.model.RoleMenu" >
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="menu_id" property="menuId" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="insert" parameterType="com.peony.peonydata.rolemenu.model.RoleMenu" >
+    insert into pe_t_role_menu (role_id, menu_id)
+    values (#{roleId,jdbcType=INTEGER}, #{menuId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.rolemenu.model.RoleMenu" >
+    insert into pe_t_role_menu
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="menuId != null" >
+        menu_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+   <delete id="deleteByRoleIdAndMenuId" parameterType="com.peony.peonydata.rolemenu.model.RoleMenu">
+		delete from pe_t_role_menu
+		where role_id = #{roleId,jdbcType=INTEGER} and menu_id=#{menuId,jdbcType=VARCHAR}
+	</delete>
+   <delete id="deleteByRoleId" parameterType="com.peony.peonydata.rolemenu.model.RoleMenu">
+		delete from pe_t_role_menu
+		where  role_id=#{roleId,jdbcType=INTEGER}
+   </delete>
+</mapper>

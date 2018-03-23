@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.baseclass.dao.BaseClassMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.baseclass.model.BaseClass" >
+    <id column="baseclass_id" property="baseclassId" jdbcType="INTEGER" />
+    <result column="baseclass_pid" property="baseclassPid" jdbcType="INTEGER" />
+    <result column="is_public" property="isPublic" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="order" property="order" jdbcType="VARCHAR" />
+    <result column="explain" property="explain" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    baseclass_id, baseclass_pid, name,is_public, `order`, `explain`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_baseclass
+    where baseclass_id = #{baseclassId,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectBaseClass" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_baseclass where 1=1
+      <if test="baseclassPid != null" >
+      		and baseclass_pid=  #{baseclassPid,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+    <select id="selectBaseClassByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    b.baseclass_id, b.baseclass_pid, b.name, b.`order`, b.`explain`,b.is_public
+    from pe_t_baseclass b ,pe_t_user_baseclass ub where b.baseclass_id=ub.baseclass_id and ub.user_id=#{userId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_baseclass
+    where baseclass_id = #{baseclassId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.baseclass.model.BaseClass" >
+    insert into pe_t_baseclass (baseclass_id, baseclass_pid, name, 
+      `order`, `explain`,is_public)
+    values (#{baseclassId,jdbcType=INTEGER}, #{baseclassPid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{order,jdbcType=VARCHAR}, #{explain,jdbcType=VARCHAR},#{isPublic,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.baseclass.model.BaseClass" >
+    insert into pe_t_baseclass
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="baseclassId != null" >
+        baseclass_id,
+      </if>
+      <if test="baseclassPid != null" >
+        baseclass_pid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="order != null" >
+        `order`,
+      </if>
+      <if test="explain != null" >
+        `explain`,
+      </if>
+      <if test="isPublic != null" >
+        is_public,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="baseclassId != null" >
+        #{baseclassId,jdbcType=INTEGER},
+      </if>
+      <if test="baseclassPid != null" >
+        #{baseclassPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="explain != null" >
+        #{explain,jdbcType=VARCHAR},
+      </if>
+       <if test="isPublic != null" >
+        #{isPublic,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.baseclass.model.BaseClass" >
+    update pe_t_baseclass
+    <set >
+      <if test="baseclassPid != null" >
+        baseclass_pid = #{baseclassPid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="order != null" >
+        `order` = #{order,jdbcType=VARCHAR},
+      </if>
+      <if test="explain != null" >
+        `explain` = #{explain,jdbcType=VARCHAR},
+      </if>
+       <if test="isPublic != null" >
+        is_public= #{isPublic,jdbcType=INTEGER},
+      </if>
+    </set>
+    where baseclass_id = #{baseclassId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.baseclass.model.BaseClass" >
+    update pe_t_baseclass
+    set baseclass_pid = #{baseclassPid,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      `order` = #{order,jdbcType=VARCHAR},
+      `explain` = #{explain,jdbcType=VARCHAR},
+       is_public=#{isPublic,jdbcType=INTEGER}
+    where baseclass_id = #{baseclassId,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectChildren" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select * from pe_t_baseclass where 1= 1
+		<choose>
+			<when test="parentCode != null and parentCode != ''">
+				AND baseclass_pid = #{parentCode}
+			</when>
+			<otherwise>
+				AND (baseclass_pid is null OR baseclass_pid='')
+			</otherwise>
+		</choose>
+		order by `order`
+	</select>
+	<select id="loadHasChildren" resultType="int" parameterType="java.lang.String">
+		SELECT CASE WHEN EXISTS(SELECT baseclass_id FROM pe_t_baseclass WHERE
+		baseclass_pid=#{parentCode}) THEN 1 ELSE 0 END AS haschild FROM DUAL
+	</select>
+	
+	<select id="findKeyWordNum" resultType="int" parameterType="java.lang.Integer">
+		SELECT
+		count(1) FROM pe_t_baseclass u,pe_t_baseclass_keyws d where
+		u.baseclass_id=d.baseclass_id and u.baseclass_id = #{baseclassId,jdbcType=INTEGER}
+	</select>
+</mapper>

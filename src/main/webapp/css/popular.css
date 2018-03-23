@@ -1,0 +1,8 @@
+.s_f_mask1{width:100%; height:100%; background:rgba(0,0,0,0.7); background: #555\9;filter: alpha(opacity=92)\9;position:fixed !important; top:0; z-index:999; display:none;}
+.s_f_div1{width:420px; height:400px;padding:10px;margin:0 auto;position:relative;top:50%;margin-top:-150px;background:#fff;border:2px solid #00BDFF;border-radius:6px;}
+.contentDiv{width:420px; height:375px;overflow-y:auto;}
+.s_f_btn_close{display:block;width:18px;height:18px;color:#fff!important;color:#fff;text-decoration:none;cursor:pointer;cursor:hand; position:absolute; top:-22px; right:-25px;}
+.s_f_div1>img{width: 300px;height: 300px;border-radius:6px;}
+.s_f_div1 div span{display:inline-block;width:50%;float:left;}
+.s_f_div1 div span b{font-weight:normal;}
+.sureBtn{text-align:center;}

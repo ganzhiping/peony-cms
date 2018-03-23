@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.menu.dao.MenuMapper">
+	<resultMap id="BaseResultMap" type="com.peony.peonydata.menu.model.Menu">
+		<id column="menu_id" property="menuId" jdbcType="INTEGER" />
+		<result column="menu_pid" property="menuPid" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="url" property="url" jdbcType="VARCHAR" />
+		<result column="image" property="image" jdbcType="VARCHAR" />
+		<result column="order" property="order" jdbcType="VARCHAR" />
+		<result column="visible" property="visible" jdbcType="CHAR" />
+		<result column="identify" property="identify" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		menu_id, menu_pid, name, url, image, `order`, visible,
+		identify
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_menu
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		pe_t_menu
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.peony.peonydata.menu.model.Menu">
+		insert into pe_t_menu
+		(menu_id, menu_pid, name,
+		url, image, `order`,
+		visible, identify)
+		values
+		(#{menuId,jdbcType=INTEGER}, #{menuPid,jdbcType=INTEGER},
+		#{name,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR},
+		#{image,jdbcType=VARCHAR}, #{order,jdbcType=VARCHAR},
+		#{visible,jdbcType=CHAR}, #{identify,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.peony.peonydata.menu.model.Menu">
+		insert into pe_t_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="menuId != null">
+				menu_id,
+			</if>
+			<if test="menuPid != null">
+				menu_pid,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="url != null">
+				url,
+			</if>
+			<if test="image != null">
+				image,
+			</if>
+			<if test="order != null">
+				`order`,
+			</if>
+			<if test="visible != null">
+				visible,
+			</if>
+			<if test="identify != null">
+				identify,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="menuId != null">
+				#{menuId,jdbcType=INTEGER},
+			</if>
+			<if test="menuPid != null">
+				#{menuPid,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				#{image,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				#{order,jdbcType=VARCHAR},
+			</if>
+			<if test="visible != null">
+				#{visible,jdbcType=CHAR},
+			</if>
+			<if test="identify != null">
+				#{identify,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.menu.model.Menu">
+		update pe_t_menu
+		<set>
+			<if test="menuPid != null">
+				menu_pid = #{menuPid,jdbcType=INTEGER},
+			</if>
+			<if test="name != null">
+				name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				url = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="image != null">
+				image = #{image,jdbcType=VARCHAR},
+			</if>
+			<if test="order != null">
+				`order` = #{order,jdbcType=VARCHAR},
+			</if>
+			<if test="visible != null">
+				visible = #{visible,jdbcType=CHAR},
+			</if>
+			<if test="identify != null">
+				identify = #{identify,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.peony.peonydata.menu.model.Menu">
+		update pe_t_menu
+		set menu_pid = #{menuPid,jdbcType=INTEGER},
+		name =
+		#{name,jdbcType=VARCHAR},
+		url = #{url,jdbcType=VARCHAR},
+		image =
+		#{image,jdbcType=VARCHAR},
+		`order` = #{order,jdbcType=VARCHAR},
+		visible
+		= #{visible,jdbcType=CHAR},
+		identify = #{identify,jdbcType=VARCHAR}
+		where menu_id = #{menuId,jdbcType=INTEGER}
+	</update>
+	<select id="selectMenus" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_menu where visible=1
+		order by identify asc
+	</select>
+	
+	<select id="selectAllMenus" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from pe_t_menu 
+		order by identify asc
+	</select>
+	<select id="selectByRoleId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select mu.menu_id, mu.menu_pid, mu.name, mu.url, mu.image, mu.`order`, mu.visible,mu.identify
+		from pe_t_menu mu ,pe_t_role_menu rm where mu.visible='1' and mu.menu_id=rm.menu_id and rm.role_id=#{roleId}
+		order by mu.identify asc
+	</select>
+	
+	<select id="selectByMenuCode" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.menu.model.Menu">
+		select mu.menu_id, mu.menu_pid, mu.name, mu.url, mu.image, mu.`order`, mu.visible,mu.identify
+		from pe_t_menu mu  where mu.visible='1' and mu.identify like CONCAT('${identify}','%' )
+		
+		order by mu.identify asc
+	</select>
+	
+</mapper>

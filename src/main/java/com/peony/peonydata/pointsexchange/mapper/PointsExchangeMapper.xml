@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.pointsexchange.dao.PointsExchangeMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.pointsexchange.model.PointsExchange" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="points" property="points" jdbcType="REAL" />
+    <result column="unitPrice" property="unitprice" jdbcType="REAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, points, unitPrice
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_points_exchange
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_points_exchange
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.pointsexchange.model.PointsExchange" >
+    insert into pe_t_points_exchange (id, points, unitPrice
+      )
+    values (#{id,jdbcType=INTEGER}, #{points,jdbcType=REAL}, #{unitprice,jdbcType=REAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.pointsexchange.model.PointsExchange" >
+    insert into pe_t_points_exchange
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="points != null" >
+        points,
+      </if>
+      <if test="unitprice != null" >
+        unitPrice,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="points != null" >
+        #{points,jdbcType=REAL},
+      </if>
+      <if test="unitprice != null" >
+        #{unitprice,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.pointsexchange.model.PointsExchange" >
+    update pe_t_points_exchange
+    <set >
+      <if test="points != null" >
+        points = #{points,jdbcType=REAL},
+      </if>
+      <if test="unitprice != null" >
+        unitPrice = #{unitprice,jdbcType=REAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.pointsexchange.model.PointsExchange" >
+    update pe_t_points_exchange
+    set points = #{points,jdbcType=REAL},
+      unitPrice = #{unitprice,jdbcType=REAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--查询套餐分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.pointsexchange.model.PointsExchange">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_points_exchange
+	</select>
+</mapper>

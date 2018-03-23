@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.peony.peonydata.operationlog.dao.OperationLogMapper" >
+  <resultMap id="BaseResultMap" type="com.peony.peonydata.operationlog.model.OperationLog" >
+       <id column="operation_log_id" property="operationLogId" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="login_type" property="loginType" jdbcType="VARCHAR" />
+    <result column="content1" jdbcType="LONGVARCHAR" property="content1" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="operate_type" property="operateType" jdbcType="VARCHAR" />
+    <result column="operate_module" property="operateModule" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="countResultMap" type="com.peony.peonydata.operationlog.model.OperationLog" >
+    <id column="operation_log_id" property="operationLogId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="CHAR" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="operate_module" property="operateModule" jdbcType="VARCHAR" />
+    <result  property="counts" />
+    <result  property="title" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   operation_log_id, time, user_id, name, type, login_type, content1,operate_type,operate_module
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from pe_t_operation_log
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+  </select>
+  
+  <!--查询列表 分页 -->
+	<select id="selectByPage" resultMap="BaseResultMap"
+		parameterType="com.peony.peonydata.operationlog.model.OperationLog">
+		select
+		<include refid="Base_Column_List" />
+		from
+		pe_t_operation_log
+		t
+		where 1=1
+	<if test="name!= null and name!='' " >
+    	 and name= #{name}
+    </if>
+    <if test="userId!= null and userId!='' " >
+    	 and user_id= #{userId}
+    </if>
+    <if test="type!= null and type!='' " >
+    	 and type= #{type}
+    </if>
+ 	<if test="loginType!= null and loginType!= '' " >
+    	 and login_type= #{loginType}
+    </if>
+		order by time desc
+	</select>
+	
+   <select id="selectOperationLogsByLoginCounts" resultMap="countResultMap">
+   select name,count(*) as counts FROM pe_t_operation_log  where type=1 GROUP BY name ORDER BY counts desc
+   </select>
+   <select id="selectEbookOperationLoginLogsByajax" resultMap="countResultMap">
+   select name,count(*) as counts FROM pe_t_operation_log  where type=1 and login_type=3 GROUP BY name ORDER BY counts desc
+   </select>
+    <select id="selectEbookOperationHotNewsLogsByajaxByPage" resultMap="countResultMap">
+   		select *,count(*) as counts 
+		FROM pe_t_operation_log
+		where  login_type=3
+		AND type =2
+		<![CDATA[ AND DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(time)   ]]>
+		GROUP BY content1 
+		ORDER BY counts DESC
+   </select>
+   
+    <!-- 1为登录 -->
+   
+   <select id="selectOperationLogsByModuleCounts" resultMap="countResultMap">
+   select operate_module as operateModule,count(*) as counts FROM pe_t_operation_log  where type!=1 GROUP BY operate_module ORDER BY counts desc
+   </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from pe_t_operation_log
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.peony.peonydata.operationlog.model.OperationLog" >
+    insert into pe_t_operation_log (operation_log_id, time, user_id, 
+      name, type, login_type, 
+      content1)
+    values (#{operationLogId,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{userId,jdbcType=INTEGER}, 
+      #{name,jdbcType=VARCHAR}, #{type,jdbcType=CHAR}, #{loginType,jdbcType=VARCHAR}, 
+      #{content1,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.peony.peonydata.operationlog.model.OperationLog" >
+    insert into pe_t_operation_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operationLogId != null" >
+        operation_log_id,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="loginType != null" >
+        login_type,
+      </if>
+      <if test="content1 != null" >
+        content1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operationLogId != null" >
+        #{operationLogId,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=CHAR},
+      </if>
+      <if test="loginType != null" >
+        #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="content1 != null" >
+        #{content1,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.peony.peonydata.operationlog.model.OperationLog" >
+    update pe_t_operation_log
+    <set >
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=CHAR},
+      </if>
+      <if test="loginType != null" >
+        login_type = #{loginType,jdbcType=VARCHAR},
+      </if>
+      <if test="content1 != null" >
+        content1 = #{content1,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.peony.peonydata.operationlog.model.OperationLog" >
+    update pe_t_operation_log
+    set time = #{time,jdbcType=TIMESTAMP},
+      user_id = #{userId,jdbcType=INTEGER},
+      name = #{name,jdbcType=VARCHAR},
+      type = #{type,jdbcType=CHAR},
+      login_type = #{loginType,jdbcType=VARCHAR},
+      content1 = #{content1,jdbcType=LONGVARCHAR}
+    where operation_log_id = #{operationLogId,jdbcType=VARCHAR}
+  </update>
+</mapper>

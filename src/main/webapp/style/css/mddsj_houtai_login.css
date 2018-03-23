@@ -1,0 +1,41 @@
+@import url(body.css);
+@import url(color_links.css);
+html{overflow-y:hidden;min-width:1000px;}
+body{ overflow-y:hidden;}
+/*---登录------------------------------------------------*/
+table,body,input{ font-family:宋体,Arial, Helvetica, sans-serif }
+
+.denglu_body .tb{background-color:transparent; background-image:url(../img/mddsj_login/idenglu_12.png); background-repeat: no-repeat;}
+
+.font_13px{ font-size:13px}
+.denglu_logo{ background:url(../img/mddsj_login/denglu_logo.png) no-repeat; width:270px; height:200px; margin:290px 60px 0 0;}
+.denglu_body{ background:#8b0001 url(../img/mddsj_login/idenglu_02.gif) repeat-x;}.denglu_body .denglu_w_br{background:url(../img/mddsj_login/idenglu_05.gif) no-repeat center 0;}
+.denglu_w_in{  padding:0 0 0 100px; }
+.foot{ background:#8b0001 url(../img/mddsj_login/idenglu_29.gif) repeat-x; height:145px; min-width:1000px;}.foot_in{ padding:30px 0 0 0;}
+.foot_cur{  position:fixed;bottom:0;  width:100%;_position:absolute; /* for IE6 */_bottom: expression(documentElement.scrollBottom); left:0; /* for IE6 */}
+
+.denglu_k{ width:386px; margin-top:250px;}
+.denglu_top_t{ background-position:center 0; height:70px;}
+.denglu_top{ overflow:hidden; background:url(../img/mddsj_login/idenglu_18.png) no-repeat; height:10px;}
+.denglu_body .denglu_center{ background: url(../img/mddsj_login/idenglu_22.png) repeat-y; 　}
+.denglu_bottom{ background: url(../img/mddsj_login/idenglu_26.png) no-repeat; height:10px;}
+.denglu_center p{ clear:both}.denglu_center .on_left{ margin:-5px 5px 0 10px;}
+.denglu_center label{ float:left;  width:112px; line-height:30px; text-align:right; padding-right:10px;}
+ .denglu_center label input{ margin:-4px 0 0 0;}.denglu_center p.font_13px label{ padding-right:5px;}
+.denglu_input{ font-weight:bold; float:left;  width:189px; height:25px; padding-left:25px; line-height:25px;  border:none; }
+.denglu_input1{ background-position:0 -72px;}.denglu_input2{ background-position:0 -114px;}
+
+.yanzheng { border:1px solid #e2a5b0; width:50px; float:left;height:21px; line-height:21px; }
+.denglu_anniuw{text-align:center; padding-bottom:10px; }
+.denglu_anniuw .denglu_anniu1,.denglu_anniuw .denglu_anniu2{ padding:0; border:none; margin:0 5px; display:inline-block; background-position:0 -212px ; width:67px; line-height:28px; height:28px;}
+.denglu_anniuw .denglu_anniu2{ background-position:0 -267px}
+/*---登录2----*/
+.denglu_logo{ background:url(../img/mddsj_login/denglu_logo.png) no-repeat; width:270px; height:200px; margin:290px 60px 0 0;}
+.denglu_body2 .tb{background-color:transparent; background-image:url(../img/mddsj_login3/idenglu_12.png); background-repeat: no-repeat;}
+.denglu_body2{ background:url(../img/mddsj_login3/mddsj_login3_16.jpg) no-repeat 0 bottom; height:100%;}
+.denglu_body2 .denglu_w_br{ background:url(../img/mddsj_login3/mddsj_login3_01.png) repeat-x}
+.denglu_body2 .denglu_logo{ background: url(../img/mddsj_login3/mddsj_login3_07.png) no-repeat; }
+.denglu_body2 .denglu_center{ background: url(../img/mddsj_login3/mddsj_login3_04.png) no-repeat; width:394px; height:277px; padding-top:50px;} 
+.denglu_body2 .denglu_anniuw{ text-align:left; padding:10px 0 0 118px ; clear:both;}
+.denglu_body2 .denglu_anniuw .denglu_anniu1,.denglu_body2 .denglu_anniuw .denglu_anniu2{width:85px; height:30px; line-height:29px;}
+.denglu_body2 .denglu_k{  margin-top:280px;}.denglu_body2 .denglu_input{ padding-left:10px;}
